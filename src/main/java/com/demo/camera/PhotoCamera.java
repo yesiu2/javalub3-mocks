@@ -2,8 +2,10 @@ package com.demo.camera;
 
 public class PhotoCamera {
 
+    ImageSensor sensor;
+
     public void turnOn() {
-        // not implemented || turns on the sensor
+        this.sensor.turnOn();
     }
 
     public void turnOff() {
@@ -11,6 +13,7 @@ public class PhotoCamera {
         // when camera is writing data, turning off shouldnt turn off the power
         // when writing data ends, camera cut the power of sensor
     }
+
 
     public void pressButton() {
         // not implemented || should doing nothing when camera is off ||
