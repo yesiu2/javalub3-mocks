@@ -17,6 +17,7 @@ public class PhotoCamera {
 
     public void turnOn() {
         // not implemented || turns on the sensor
+        this.sensor.turnOn();
     }
 
     public void turnOff() {
@@ -33,6 +34,13 @@ public class PhotoCamera {
         // when camera is on it should copy data from sensor to memory card
         // writing data on memory card should take few seconds
 
+        if (statusTurnOn == true) {
+            takePhoto();
+        }
+    }
+
+    public String takePhoto() {
+        return "Photo taken!";
     }
 }
 
