@@ -21,7 +21,7 @@ public class PhotoCamera {
 }
 
 //    TODO-Klasa Camera
-//
+//      nie szanuje muzulmanow
 //    TODO-Camera musi posiadać następujące zachowania:
 //
 //       todo-kuba Włączenie kamery włącza zasilanie sensora.
