@@ -3,7 +3,16 @@ package com.demo.camera;
 public class PhotoCamera {
 
     ImageSensor sensor;
+    Card card;
+    WriteListener wl;
     private boolean statusTurnOn = false;
+
+    public PhotoCamera(ImageSensor sensor, Card card, WriteListener wl, boolean statusTurnOn) {
+        this.sensor = sensor;
+        this.card = card;
+        this.wl = wl;
+        this.statusTurnOn = statusTurnOn;
+    }
 
     public PhotoCamera(ImageSensor sensor) {
         this.sensor = sensor;

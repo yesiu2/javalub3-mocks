@@ -4,6 +4,8 @@ import javafx.scene.Camera
 import spock.lang.Specification
 import sun.management.Sensor
 
+import java.awt.Image
+
 class PhotoCameraSpec extends Specification {
 
 
@@ -52,6 +54,26 @@ class PhotoCameraSpec extends Specification {
         0 * sensor.turnOff()
         0 * sensor.read()
         !cam.isOn()
+    }
+
+    def
+    "Press button with power on, copying data from sensor to memory card. Writing data to memcard should take few secs"(){
+        given:
+        ImageSensor sensor = Mock(ImageSensor)
+        Card card = Mock(Card)
+        WriteListener wl = Mock(WriteListener)
+        PhotoCamera cam = new PhotoCamera(sensor, card, wl)
+
+        when:
+        cam.turnOn()
+        cam.pressButton()
+
+
+        then:
+        cam.isOn()
+        1 * sensor.read()
+        1 * card.write()
+        1 * wl.writeCompleted()
     }
 
 }
