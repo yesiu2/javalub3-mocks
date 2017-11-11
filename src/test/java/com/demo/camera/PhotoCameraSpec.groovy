@@ -1,10 +1,14 @@
 package com.demo.camera
 
 import javafx.scene.Camera
+import org.junit.rules.Stopwatch
+import org.spockframework.util.Assert
 import spock.lang.Specification
 import sun.management.Sensor
+import com.google.common.base.Stopwatch
 
 import java.awt.Image
+import java.util.concurrent.TimeUnit
 
 class PhotoCameraSpec extends Specification {
 
@@ -56,24 +60,43 @@ class PhotoCameraSpec extends Specification {
         !cam.isOn()
     }
 
-    def
-    "Press button with power on, copying data from sensor to memory card. Writing data to memcard should take few secs"(){
+    def "Press button with power on, copying data from sensor to memory card."(){
         given:
         ImageSensor sensor = Mock(ImageSensor)
         Card card = Mock(Card)
-        WriteListener wl = Mock(WriteListener)
-        PhotoCamera cam = new PhotoCamera(sensor, card, wl)
-
-        when:
+        boolean status
+        PhotoCamera cam = new PhotoCamera(sensor, card, status)
         cam.turnOn()
+        when:
+
         cam.pressButton()
+
 
 
         then:
         cam.isOn()
-        1 * sensor.read()
-        1 * card.write()
-        1 * wl.writeCompleted()
+        1 * card.write(sensor.read())
+    }
+
+    def "Writing data should take few seconds"(){
+        given:
+        ImageSensor sensor = Mock(ImageSensor)
+        Card card = Mock(Card)
+        boolean status
+        PhotoCamera cam = new PhotoCamera(sensor, card, status)
+        cam.turnOn()
+
+        when:
+        Stopwatch sw = new Stopwatch().start()
+        cam.pressButton()
+        sw.stop()
+
+        then:
+        cam.isOn()
+        1 * card.write(sensor.read())
+        sw.elapsed(TimeUnit.SECONDS) > 2
+
+
     }
 
 }

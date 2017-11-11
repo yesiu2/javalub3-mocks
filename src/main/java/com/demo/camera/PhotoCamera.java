@@ -4,13 +4,11 @@ public class PhotoCamera {
 
     ImageSensor sensor;
     Card card;
-    WriteListener wl;
     private boolean statusTurnOn = false;
 
-    public PhotoCamera(ImageSensor sensor, Card card, WriteListener wl, boolean statusTurnOn) {
+    public PhotoCamera(ImageSensor sensor, Card card, boolean statusTurnOn) {
         this.sensor = sensor;
         this.card = card;
-        this.wl = wl;
         this.statusTurnOn = statusTurnOn;
     }
 
@@ -27,6 +25,7 @@ public class PhotoCamera {
     public void turnOn() {
         // not implemented || turns on the sensor
         this.sensor.turnOn();
+        statusTurnOn = true;
     }
 
     public void turnOff() {
@@ -43,8 +42,19 @@ public class PhotoCamera {
         // when camera is on it should copy data from sensor to memory card
         // writing data on memory card should take few seconds
 
-        if (statusTurnOn == true) {
-            takePhoto();
+        if (statusTurnOn) {
+           byte[] bytes = sensor.read();
+            System.out.println("Reading and writing data. It may take few seconds");
+
+            try {
+               card.write(bytes);
+               Thread.sleep(7000);
+           } catch (InterruptedException e) {
+                System.out.println("Error! Interrpted Exception");
+                e.printStackTrace();
+            }
+            System.out.println("Data saved");
+
         }
     }
 
