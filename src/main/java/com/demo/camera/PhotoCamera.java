@@ -1,10 +1,19 @@
 package com.demo.camera;
 
-public class PhotoCamera {
+public class PhotoCamera implements WriteListener {
 
     ImageSensor sensor;
     Card card;
     private boolean statusTurnOn = false;
+    private boolean writtenStatus = true;
+
+    private boolean isWrittenStatus() {
+        return writtenStatus;
+    }
+
+    private void setWriteStatus(boolean writeStatus) {
+        this.writtenStatus = writeStatus;
+    }
 
     public PhotoCamera(ImageSensor sensor, Card card, boolean statusTurnOn) {
         this.sensor = sensor;
@@ -48,6 +57,7 @@ public class PhotoCamera {
 
             try {
                card.write(bytes);
+               setWriteStatus(false);
                Thread.sleep(7000);
            } catch (InterruptedException e) {
                 System.out.println("Error! Interrpted Exception");
@@ -60,6 +70,11 @@ public class PhotoCamera {
 
     public String takePhoto() {
         return "Photo taken!";
+    }
+
+    @Override
+    public void writeCompleted() {
+        setWriteStatus(true);
     }
 }
 
